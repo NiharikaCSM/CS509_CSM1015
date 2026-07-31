@@ -1,13 +1,14 @@
-#define WRAPPER.H
+#ifndef WRAPPER_H
+#define WRAPPER_H
 
 #include<stdio.h>
 #include<time.h>
 
 //opens files passed via command line
-FILE *openFile(int argc, char *argv[]);
+FILE *openFile(const char *filename);
 
 //returns the runtime
 double getExecutionTime();
 
-double printExecutionTime(double start, double end);
-
+void printExecutionTime(double start, double end);
+#endif
