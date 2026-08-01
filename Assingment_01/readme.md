@@ -79,6 +79,21 @@ make
 ./run tests/test_01.txt blocking
 ```
 
+## GEMM Results Table
+
+| Test File | Input Type / Size | Expected Output | Actual Output | Simple Time | Blocking Time | Block Size | Status |
+|---|---|---|---|---|---|---|---|
+| test_01.txt | 3x3 and 3x3 | Result matrix | Result matrix | 0.0020 ms |  ms |  | Pass |
+| test_02.txt | 1x3 and 4x1 | Result matrix | Result matrix | 0.0050 ms |  ms |  | Pass |
+| test_03.txt | 3x3 and 3x3 (Identity B) | Result matrix = A | Result matrix | 0.0030 ms |  ms |  | Pass |
+| test_04.txt | 2x2 and 2x2 (Zero B) | Result matrix = 0 | Result matrix | 0.0030 ms |  ms |  | Pass |
+| test_05.txt | 12x17 and 17x23 | Result matrix | Result matrix | 0.0240 ms |  ms |  | Pass |
+| test_06.txt | 40x60 and 60x30 | Result matrix | Result matrix | 0.2830 ms |  ms |  | Pass |
+| test_07.txt | 50x50 and 50x50 | Result matrix | Result matrix | 0.4840 ms |  ms |  | Pass |
+| test_08.txt | 100x100 and 100x100 | Result matrix | Result matrix | 3.5680 ms |  ms |  | Pass |
+| test_09.txt | 300x300 and 300x300 | Result matrix | Result matrix | 72.2060 ms |  ms |  | Pass |
+| test_10.txt | 800x1000 and 1000x600 | Result matrix | Result matrix | 1146.3760 ms |  ms |  | Pass |
+
 ## Time and Space Complexity
 
 **Simple GEMM:**

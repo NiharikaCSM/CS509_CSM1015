@@ -16,5 +16,6 @@ double getExecutionTime() {
 }
 
 void printExecutionTime(double start, double end) {
-    printf("\nExecution Time : %.6f seconds\n", end-start);
+    double time = (end-start)*1000; // Convert to milliseconds
+    printf("\nExecution Time : %.4f ms\n", time);
 }
