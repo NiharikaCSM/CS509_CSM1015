@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "matrix.h"
 
+#define BLOCK_SIZE 32
+
 int **allocateMatrixSpace(int rows, int cols) {
     int **matrix = (int **)malloc(rows * sizeof(int *));
     for (int i = 0; i < rows; i++) {
@@ -56,4 +58,37 @@ int **multiplyMatricesSimple(int **matrixA, int rowsA, int colsA, int **matrixB,
         }
     }
     return result;
+}
+
+int **multiplyMatricesBlocking(int **matrixA, int rowsA, int colsA, int **matrixB, int colsB) {
+    int **resultMatrix = allocateMatrixSpace(rowsA, colsB);
+
+    // Initialize result matrix to all zeros
+    for (int row = 0; row < rowsA; row++)
+        for (int col = 0; col < colsB; col++)
+            resultMatrix[row][col] = 0;
+
+    // Outer three loops walk through the matrix in BLOCK_SIZE x BLOCK_SIZE chunks
+    for (int rowBlockStart = 0; rowBlockStart < rowsA; rowBlockStart += BLOCK_SIZE) {
+        for (int colBlockStart = 0; colBlockStart < colsB; colBlockStart += BLOCK_SIZE) {
+            for (int innerBlockStart = 0; innerBlockStart < colsA; innerBlockStart += BLOCK_SIZE) {
+
+                // Clamp block boundaries so we don't run past the matrix edges
+                int rowBlockEnd = (rowBlockStart + BLOCK_SIZE < rowsA) ? rowBlockStart + BLOCK_SIZE : rowsA;
+                int colBlockEnd = (colBlockStart + BLOCK_SIZE < colsB) ? colBlockStart + BLOCK_SIZE : colsB;
+                int innerBlockEnd = (innerBlockStart + BLOCK_SIZE < colsA) ? innerBlockStart + BLOCK_SIZE : colsA;
+
+                // Inner three loops do the actual multiplication, but only within the current block
+                for (int row = rowBlockStart; row < rowBlockEnd; row++) {
+                    for (int col = colBlockStart; col < colBlockEnd; col++) {
+                        int partialSum = resultMatrix[row][col];
+                        for (int inner = innerBlockStart; inner < innerBlockEnd; inner++)
+                            partialSum += matrixA[row][inner] * matrixB[inner][col];
+                        resultMatrix[row][col] = partialSum;
+                    }
+                }
+            }
+        }
+    }
+    return resultMatrix;
 }

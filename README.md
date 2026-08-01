@@ -46,28 +46,17 @@ The `common_wrapper/` folder contains a single wrapper file (`wrapper.c`) that i
 
 Each assignment folder has its own `Makefile`, so building and running is done **from inside that assignment's folder**, not from the repo root.
 
-**1. Move into the assignment folder:**
+At a high level, the general pattern across all assignments is:
+
 ```bash
-cd assignment_01
-```
-**2. Build it:**
-```bash
+cd assignment_XX
 make
+./run <arguments specific to that assignment>
 ```
-This compiles `common_wrapper/wrapper.c`, the assignment's `src/*.c`, and `driver/driver.c` together, producing an executable named `run` inside the assignment folder.
+ 
+For the exact command, arguments, and expected output for a specific assignment, refer to that assignment's own `readme.md` (e.g.`assignment_01/readme.md`). It documents the precise input format, the exact compilation and execution steps, sample test cases, and expected output for that assignment.
 
-**3. Run it against a test file:**
-```bash
-./run tests/test_01.txt
-```
-Replace `test_01.txt` with any other file in `tests/` to try different inputs.
-
-**4. Clean up compiled files (optional):**
-```bash
-make clean
-```
-
-To run a different assignment, just `cd` into that assignment's folder and repeat the same steps — each one builds and runs independently.
+To run a different assignment, just `cd` into that assignment's folder and repeat the same steps, each one builds and runs independently.
 
 ## Conventions followed
 

@@ -26,6 +26,9 @@ int main(int argc, char *argv[]){
 
     } else if (strcasecmp(method, "blocking") == 0) {
         printf("Algorithm: GEMM Blocking\n");
+        startTime = getExecutionTime();
+        resultMatrix = multiplyMatricesBlocking(matrixA, rowsA, colsA, matrixB, colsB);
+        endTime = getExecutionTime();
 
     } else {
         printf("Invalid multiplication method specified\n");
@@ -34,7 +37,7 @@ int main(int argc, char *argv[]){
     }
 
     printf("Resultant Matrix:\n");
-    printMatrix(resultMatrix, rowsA, colsB);
+    //printMatrix(resultMatrix, rowsA, colsB);
 
     printExecutionTime(startTime, endTime);
 

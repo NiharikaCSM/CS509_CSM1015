@@ -41,6 +41,9 @@ B row K-1 values
   dimensions) — no validation is done for malformed input beyond the
   dimension compatibility check.
 
+**Constraints:**
+- `BLOCK_SIZE` for the blocking implementation is fixed at compile time (currently 32) — it isn't read from input.
+
   ## Source Files, Driver Files, Helper Functions, and Test Files
 
 **`src/matrix.c` / `matrix.h`** — the core logic:
@@ -83,16 +86,16 @@ make
 
 | Test File | Input Type / Size | Expected Output | Actual Output | Simple Time | Blocking Time | Block Size | Status |
 |---|---|---|---|---|---|---|---|
-| test_01.txt | 3x3 and 3x3 | Result matrix | Result matrix | 0.0020 ms |  ms |  | Pass |
-| test_02.txt | 1x3 and 4x1 | Result matrix | Result matrix | 0.0050 ms |  ms |  | Pass |
-| test_03.txt | 3x3 and 3x3 (Identity B) | Result matrix = A | Result matrix | 0.0030 ms |  ms |  | Pass |
-| test_04.txt | 2x2 and 2x2 (Zero B) | Result matrix = 0 | Result matrix | 0.0030 ms |  ms |  | Pass |
-| test_05.txt | 12x17 and 17x23 | Result matrix | Result matrix | 0.0240 ms |  ms |  | Pass |
-| test_06.txt | 40x60 and 60x30 | Result matrix | Result matrix | 0.2830 ms |  ms |  | Pass |
-| test_07.txt | 50x50 and 50x50 | Result matrix | Result matrix | 0.4840 ms |  ms |  | Pass |
-| test_08.txt | 100x100 and 100x100 | Result matrix | Result matrix | 3.5680 ms |  ms |  | Pass |
-| test_09.txt | 300x300 and 300x300 | Result matrix | Result matrix | 72.2060 ms |  ms |  | Pass |
-| test_10.txt | 800x1000 and 1000x600 | Result matrix | Result matrix | 1146.3760 ms |  ms |  | Pass |
+| test_01.txt | 3x3 and 3x3 | Result matrix | Result matrix | 0.0020 ms | 0.0030 ms | 32 | Pass |
+| test_02.txt | 1x3 and 4x1 | Result matrix | Result matrix | 0.0050 ms | 0.0030 ms | 32 | Pass |
+| test_03.txt | 3x3 and 3x3 (Identity B) | Result matrix = A | Result matrix | 0.0030 ms | 0.0040 ms | 32 | Pass |
+| test_04.txt | 2x2 and 2x2 (Zero B) | Result matrix = 0 | Result matrix | 0.0030 ms | 0.0040 ms | 32 | Pass |
+| test_05.txt | 12x17 and 17x23 | Result matrix | Result matrix | 0.0240 ms | 0.0310 ms | 32 | Pass |
+| test_06.txt | 40x60 and 60x30 | Result matrix | Result matrix | 0.2830 ms | 0.1550 ms | 32 | Pass |
+| test_07.txt | 50x50 and 50x50 | Result matrix | Result matrix | 0.4840 ms | 0.2180 ms | 32 | Pass |
+| test_08.txt | 100x100 and 100x100 | Result matrix | Result matrix | 3.5680 ms | 3.0530 ms | 32 | Pass |
+| test_09.txt | 300x300 and 300x300 | Result matrix | Result matrix | 72.2060 ms | 51.9220 ms | 32 | Pass |
+| test_10.txt | 800x1000 and 1000x600 | Result matrix | Result matrix | 1146.3760 ms | 766.9800 ms | 32 | Pass |
 
 ## Time and Space Complexity
 
