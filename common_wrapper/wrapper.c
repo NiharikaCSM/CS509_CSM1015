@@ -16,5 +16,5 @@ double getExecutionTime() {
 }
 
 void printExecutionTime(double start, double end) {
-    printf("\nExecution Time : %.6f seconds", end-start);
+    printf("\nExecution Time : %.6f seconds\n", end-start);
 }
