@@ -1,50 +1,26 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include "wrapper.h"
-#include "matrix.h"
+#include "gemm_runner.h"
+#include "csr_runner.h"
 
-int main(int argc, char *argv[]){
-    FILE *matrixFile = openFile(argv[1]);
-    const char *method = argv[2];
-
-    //populate matrix A and B
-    int rowsA, colsA, rowsB, colsB;
-    getDimensions(matrixFile, &rowsA, &colsA, &colsB);
-    rowsB = colsA;
-    
-    int **matrixA = readMatrixFromFile(matrixFile, &rowsA, &colsA);
-    int **matrixB = readMatrixFromFile(matrixFile, &rowsB, &colsB);
-    int **resultMatrix = NULL;
-    double startTime, endTime;
-
-    if (strcasecmp(method, "simple") == 0) {
-        printf("Algorithm: GEMM Simple\n");
-        //Multiply matrices and note the start and end time
-        startTime = getExecutionTime();
-        resultMatrix = multiplyMatricesSimple(matrixA, rowsA, colsA, matrixB, rowsB, colsB);
-        endTime = getExecutionTime();
-
-    } else if (strcasecmp(method, "blocking") == 0) {
-        printf("Algorithm: GEMM Blocking\n");
-        startTime = getExecutionTime();
-        resultMatrix = multiplyMatricesBlocking(matrixA, rowsA, colsA, matrixB, colsB);
-        endTime = getExecutionTime();
-
-    } else {
-        printf("Invalid multiplication method specified\n");
-        fclose(matrixFile);
+int main(int argc, char *argv[]) {
+    if (argc < 3) {
+        printf("Please provide correct input arguments.\n");
         return 1;
     }
 
-    printf("Resultant Matrix:\n");
-    //printMatrix(resultMatrix, rowsA, colsB);
+    char *filePath = argv[1];
+    char *method = argv[2];
 
-    printExecutionTime(startTime, endTime);
+    if (strcasecmp(method, "csr") == 0) {
+        if (argc < 4) {
+            printf("Please provide correct input arguments.\n");
+            return 1;
+        }
+        int isWeighted = atoi(argv[3]);
+        return runCsrConversion(filePath, isWeighted);
+    }
 
-    freeMatrixSpace(matrixA, rowsA);
-    freeMatrixSpace(matrixB, rowsB);
-    freeMatrixSpace(resultMatrix, rowsA);
-
-    fclose(matrixFile);
-    return 0;
+    return runGemm(filePath, method);
 }

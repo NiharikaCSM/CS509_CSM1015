@@ -14,11 +14,15 @@ This is the standard triple nested loop matrix multiplication. For a result matr
 
 **GEMM Blocking**
 
-This version splits the matrices into smaller square blocks (tiles) of a fixed size (`BLOCK_SIZE`), and multiplies block-by-block instead of element-by-element across the whole matrix at once
+This version splits the matrices into smaller square blocks (tiles) of a fixed size (`BLOCK_SIZE`), and multiplies block-by-block instead of element-by-element across the whole matrix at once.
+
+**CSR Graph Conversion**
+ 
+Compressed Sparse Row (CSR) is a compact way to store a graph's adjacency information using three flat arrays : `rowPtr`, `colIndex`, and `edgeWeights`, instead of a full adjacency matrix. `rowPtr` marks where each vertex's neighbors start and end in `colIndex`, `colIndex` stores the actual neighbor list, and `edgeWeights` stores edge weights when the graph is weighted.
 
 ## Input Format, Assumptions, and Constraints
 
-Each test file follows this format:
+**GEMM** — Each test file follows this format:
 ```
 M K N
 A row 0 values
@@ -35,14 +39,32 @@ B row K-1 values
 - Both matrices are read from the **same** file, one after the other —
   A's rows first, then B's rows.
 
+**CSR** — Each test file follows this format:
+```
+V E
+u0 degree neighbor1 [weight1] neighbor2 [weight2] ...
+u1 degree neighbor1 [weight1] neighbor2 [weight2] ...
+...
+u(V-1) degree neighbor1 [weight1] neighbor2 [weight2] ...
+SOURCE s
+```
+- `V` is the number of vertices, `E` the number of unique edges.
+- Each vertex's line lists its ID, degree, and that many neighbors.
+- Weighted graphs list each neighbor followed by its edge weight; unweighted graphs list only neighbor IDs.
+- A vertex with no neighbors is written as `u 0`.
+
+
 **Assumptions:**
 - All matrix values are integers.
 - The input file is well-formed (correct number of values per the stated
   dimensions) — no validation is done for malformed input beyond the
   dimension compatibility check.
+- Graph vertices are listed in order (0 to V-1) in the input file.
+
 
 **Constraints:**
 - `BLOCK_SIZE` for the blocking implementation is fixed at compile time (currently 32) — it isn't read from input.
+- `colIndex` and `edgeWeights` are sized at `2 x E`, since each undirected edge is listed once per endpoint.
 
   ## Source Files, Driver Files, Helper Functions, and Test Files
 
@@ -54,14 +76,19 @@ B row K-1 values
 - `printMatrix(matrixFile, rows, cols)` — prints a matrix to stdout.
 - `multiplyMatricesSimple(int **matrixA, int rowsA, int colsA, int **matrixB, int rowsB, int colsB)` — the simple triple-loop multiplication.
 
-**`driver/driver.c`** — contains `main()`. Reads the test file and method argument, calls the appropriate multiplication function from `matrix.c`, times the execution, and prints the result.
+**`src/graph.c` / `graph.h`** — the CSR conversion logic:
+- `readAdjacencyListAsCSR(graphFile, isWeighted)` — reads an adjacency-list file and converts it into CSR form (`rowPtr`, `colIndex`, `edgeWeights`).
+- `printCSRGraph(graph)` — prints the resulting CSR arrays.
+- `freeCSRGraph(graph)` — frees all memory associated with a CSR graph.
+
+**`driver/driver.c`** — contains `main()`. Reads the input file and method argument, and dispatches to the GEMM or CSR runner accordingly, timing execution and printing the result.
 
 **`../common_wrapper/wrapper.c`** (shared across all assignments):
 - `openFile(filename)` — opens the input file, exits with an error if it can't be opened.
 - `getExecutionTime()` — returns the current time, used to measure how long multiplication takes.
 - `printExecutionTime(start, end)` — prints the elapsed time in seconds.
 
-**`tests/`** — contains input files following the format describe above. Each file has both matrices A and B, sized to test different scenarios (square matrices, non-square matrices, etc.)
+**`tests/`** — contains input files following the format describe above. Each file has both matrices A and B, sized to test different scenarios (square matrices, non-square matrices, etc.). Graph test files contain adjacency lists at various sizes.
 
 ## Compilation and Execution Instructions
 
@@ -70,17 +97,23 @@ From inside `assignment_01/`:
 **Compile:**
 ```bash
 make
-```
-
-**Run (simple method):**
+``` 
+**Run (GEMM simple):**
 ```bash
 ./run tests/test_01.txt simple
 ```
 
-**Run (blocking method):**
+**Run (GEMM blocking):**
 ```bash
 ./run tests/test_01.txt blocking
 ```
+ 
+**Run (CSR Conversion):**
+```bash
+./run tests/csr_test_01.txt csr 0
+```
+Use `0` for unweighted graph files, `1` for weighted graph files.
+ 
 
 ## GEMM Results Table
 
