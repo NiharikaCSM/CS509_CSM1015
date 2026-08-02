@@ -8,10 +8,13 @@ int runCsrConversion(char *graphFilePath, int isWeighted) {
 
     printf("Algorithm: CSR Conversion\n");
 
+    double startTime = getExecutionTime();
     CSRGraph graph = readAdjacencyListAsCSR(graphFile, isWeighted);
+    double endTime = getExecutionTime();
 
     fclose(graphFile);
     printCSRGraph(&graph);
+    printExecutionTime(startTime, endTime);
     freeCSRGraph(&graph);
 
     return 0;

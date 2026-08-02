@@ -130,6 +130,18 @@ Use `0` for unweighted graph files, `1` for weighted graph files.
 | test_09.txt | 300x300 and 300x300 | Result matrix | Result matrix | 72.2060 ms | 51.9220 ms | 32 | Pass |
 | test_10.txt | 800x1000 and 1000x600 | Result matrix | Result matrix | 1146.3760 ms | 766.9800 ms | 32 | Pass |
 
+## CSR Conversion Results Table
+
+| Test File | Vertices (V) | Edges (E) | Input Type | Execution Time | Status |
+|---|---|---|---|---|---|
+| csr_test_01.txt | 10 | 30 | Unweighted | 0.1170 ms | Pass |
+| csr_test_02.txt | 100 | 300 | Unweighted | 0.1480 ms | Pass |
+| csr_test_03.txt | 10000 | 30000 | Unweighted | 7.1680 ms | Pass |
+| csr_test_04.txt | 50000 | 150000 | Unweighted | 29.5620 ms | Pass |
+| csr_test_05.txt | 100000 | 300000 | Unweighted | 60.5950  ms | Pass |
+| csr_test_06.txt | 10000 | 300000 | Weighted | 14.1590 ms | Pass |
+| csr_test_07.txt | 50000 | 150000 | Weighted | 49.5950 ms | Pass |
+
 ## Time and Space Complexity
 
 **Simple GEMM:**
