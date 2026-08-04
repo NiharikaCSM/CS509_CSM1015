@@ -3,7 +3,7 @@
 
 ## About this repository
 
-This repository contains my submissions for CS509 assignments. Each assignment lives in its own folder and includes the source code, a driver program to run it, sample test cases, and (optionally) expected outputs. A common wrapper is shared across all assignments to handle repetitive setup like timing and I/O formatting, so each assignment folder only needs to focus on the actual logic.
+This repository contains my submissions for CS509 assignments. Each assignment lives in its own folder and includes the source code, a driver program to run it and sample test cases. A common wrapper is shared across all assignments to handle repetitive setup like timing and I/O formatting, so each assignment folder only needs to focus on the actual logic.
 
 ## Student Details
 
@@ -24,12 +24,11 @@ CS509_CSM1015/
 ├── common_wrapper/
 │ └── wrapper.c
 │ └── wrapper.h
-├── assignment_01/
+├── Assignment_01/
 │ ├── makefile
 │ ├── src/ 
 │ ├── driver/ 
 │ ├── tests/ 
-│ ├── outputs/
 │ └── readme.md 
 ├── assignment_02/
 ```
@@ -44,7 +43,7 @@ The `common_wrapper/` folder contains a single wrapper file (`wrapper.c`) that i
 
 ## How to run the code
 
-Each assignment folder has its own `Makefile`, so building and running is done **from inside that assignment's folder**, not from the repo root.
+Each assignment folder has its own `makefile`, so building and running is done **from inside that assignment's folder**, not from the repo root.
 
 At a high level, the general pattern across all assignments is:
 

@@ -2,10 +2,26 @@
 #include <stdlib.h>
 #include "graph.h"
 
-CSRGraph readAdjacencyListAsCSR(FILE *filename, int isWeighted) {
-    CSRGraph graph;
+static void failWithFormatError(const char *message) {
+    fprintf(stderr, "Error: Invalid input file format - %s\n", message);
+    exit(1);
+}
 
-    fscanf(filename, "%d %d", &graph.vertices, &graph.edges);
+CSRGraph readAdjacencyListAsCSR(FILE *filename, int isWeighted) {
+    CSRGraph graph;    
+
+    char headerLine[256];
+    if (fgets(headerLine, sizeof(headerLine), filename) == NULL)
+        failWithFormatError("file is empty — expected 'V E' on the first line.");
+
+    if (sscanf(headerLine, "%d %d", &graph.vertices, &graph.edges) != 2)
+        failWithFormatError("Expected 'V E' on the first line, but couldn't read two integers from it.");
+ 
+    if (graph.vertices <= 0)
+        failWithFormatError("Number of vertices (V) must be a positive integer");
+ 
+    if (graph.edges < 0)
+        failWithFormatError("Number of edges (E) cannot be negative.");
 
     int maxPossibleEntries = 2 * graph.edges;
 
@@ -18,13 +34,28 @@ CSRGraph readAdjacencyListAsCSR(FILE *filename, int isWeighted) {
 
     for (int v = 0; v < graph.vertices; v++) {
         int vertexId, degree;
-        fscanf(filename, "%d %d", &vertexId, &degree);
-
+        if (fscanf(filename, "%d %d", &vertexId, &degree) != 2)
+            failWithFormatError("expected a vertex line (id and degree), but the file ended early or contained non-integer data.");
+ 
+        if (vertexId != v)
+            failWithFormatError("vertices must be listed in order 0 to V-1; expected vertex line for a different vertex than the one found.");
+ 
+        if (degree < 0)
+            failWithFormatError("a vertex's degree cannot be negative."); 
+            
         //add the neighbors of vertex v to the colIndex array
         for (int i = 0; i < degree; i++) {
-            fscanf(filename, "%d", &graph.colIndex[nextFreeSlot]);
-            if (isWeighted)
-                fscanf(filename, "%d", &graph.edgeWeights[nextFreeSlot]);
+            if (fscanf(filename, "%d", &graph.colIndex[nextFreeSlot]) != 1)
+                failWithFormatError("Expected a neighbor vertex id, but the file ended early or contained non-integer data");
+ 
+            if (graph.colIndex[nextFreeSlot] < 0 || graph.colIndex[nextFreeSlot] >= graph.vertices)
+                failWithFormatError("a neighbor id is out of range (must be between 0 and V-1)");
+
+            if (isWeighted){
+                if (fscanf(filename, "%d", &graph.edgeWeights[nextFreeSlot]) != 1)
+                    failWithFormatError("expected an edge weight after the neighbor id, but the file ended early or contained non-integer data.");
+  
+            }      
             nextFreeSlot++;
         }
 

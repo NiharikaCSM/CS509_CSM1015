@@ -5,7 +5,7 @@
 FILE *openFile(const char *filename) {
     FILE *inputFile = fopen(filename, "r");
     if(!inputFile) {
-        printf("Error : Failed to open file\n");
+        printf("Error : Input file not found\n");
         exit(1);
     }
     return inputFile;

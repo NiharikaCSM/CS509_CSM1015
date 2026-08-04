@@ -11,6 +11,7 @@ typedef struct {
     int *edgeWeights; // NULL if the graph is unweighted
 } CSRGraph;
 
+static void failWithFormatError(const char *message);
 CSRGraph readAdjacencyListAsCSR(FILE *fp, int isWeighted);
 
 void printCSRGraph(CSRGraph *graph);

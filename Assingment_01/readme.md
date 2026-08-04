@@ -77,7 +77,7 @@ SOURCE s
 - `multiplyMatricesSimple(int **matrixA, int rowsA, int colsA, int **matrixB, int rowsB, int colsB)` — the simple triple-loop multiplication.
 
 **`src/graph.c` / `graph.h`** — the CSR conversion logic:
-- `readAdjacencyListAsCSR(graphFile, isWeighted)` — reads an adjacency-list file and converts it into CSR form (`rowPtr`, `colIndex`, `edgeWeights`).
+- `readAdjacencyListAsCSR(graphFile, isWeighted)` — reads the adjacency list and builds `rowPtr`, `colIndex`, and (if weighted) `edgeWeights` in a single pass. ; exits with a descriptive error on any malformed input.
 - `printCSRGraph(graph)` — prints the resulting CSR arrays.
 - `freeCSRGraph(graph)` — frees all memory associated with a CSR graph.
 
@@ -150,9 +150,5 @@ Use `0` for unweighted graph files, `1` for weighted graph files.
 - Space complexity: O(M×K + K×N + M×N) for storing A, B, and C.
 
 **Blocking GEMM:**
-- Time complexity: same asymptotic complexity, O(M × K × N) — blocking
-  doesn't reduce the number of operations, only changes the memory access
-  pattern to improve cache utilization.
-- Space complexity: same as the simple version, O(M×K + K×N + M×N) — no
-  extra data structures are allocated, just an additional fixed-size
-  `BLOCK_SIZE` constant controlling loop tiling.
+- Time complexity: same asymptotic complexity, O(M × K × N) — blocking doesn't reduce the number of operations, only changes the memory access pattern to improve cache utilization.
+- Space complexity: same as the simple version, O(M×K + K×N + M×N) — no extra data structures are allocated, just an additional fixed-size `BLOCK_SIZE` constant controlling loop tiling.

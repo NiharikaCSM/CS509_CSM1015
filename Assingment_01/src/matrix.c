@@ -19,8 +19,16 @@ void freeMatrixSpace(int **matrix, int rows) {
     free(matrix);
 }
 
-void getDimensions(FILE *filename, int *rowsA, int *colsA_rowsB, int *colsB){
-    fscanf(filename, "%d %d %d", rowsA, colsA_rowsB, colsB);
+void getDimensions(FILE *filename, int *rowsA, int *colsA, int *colsB){
+    char headerLine[256];
+    if(fgets(headerLine, sizeof(headerLine), filename) == NULL) {
+        printf("Error: Failed to read matrix dimensions\n");
+        exit(1);
+    }
+    if (sscanf(headerLine, "%d %d %d", rowsA, colsA, colsB) != 3) {
+        printf("Error: Matrix dimensions not found on the first line\n");
+        exit(1);
+    }
 }
 
 int **readMatrixFromFile(FILE *filename, int *rows, int *cols) {
