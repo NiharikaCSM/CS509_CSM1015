@@ -4,7 +4,13 @@
 
 **Type:** Single
 
-**Objective:** 
+**Objective:** Implement GEMM (General Matrix Multiplication) with both a
+simple and a blocking implementation, compare their execution time on
+identical inputs, and implement the adjacency-list-to-CSR (Compressed
+Sparse Row) graph conversion as a standalone, testable component. Input
+files for both GEMM and CSR are validated on read, so that malformed
+input produces a clear, specific error message instead of a crash or
+silently incorrect output.
 
 ## Explanation of the Algorithm / Approach
 
@@ -142,6 +148,14 @@ Use `0` for unweighted graph files, `1` for weighted graph files.
 | csr_test_06.txt | 10000 | 300000 | Weighted | 14.1590 ms | Pass |
 | csr_test_07.txt | 50000 | 150000 | Weighted | 49.5950 ms | Pass |
 
+## Input Validation Test Results
+
+| Test File | Malformed Condition | Program Output | Exit Code | Status |
+|---|---|---|---|---|
+| csr_bad_header_missing_E.txt | Header line has only V, missing E | `Error: Invalid input file format - vertices must be listed in order 0 to V-1; expected vertex line for a different vertex than the one found.` | 1 | Correctly rejected |
+| csr_bad_neighbor_negative.txt | A neighbor id is negative | `Error: Invalid input file format - a neighbor id is out of range (must be between 0 and V-1).` | 1 | Correctly rejected |
+| csr_bad_vertex_order.txt | Vertices not listed in order 0 to V-1 | `Error: Invalid input file format - vertices must be listed in order 0 to V-1; expected vertex line for a different vertex than the one found.` | 1 | Correctly rejected |
+| matrix_bad_dimensions_missing.txt | Dimensions not listed correctly in header | `Error: Matrix dimensions not found on the first line` | 1 | Correctly rejected |
 ## Time and Space Complexity
 
 **Simple GEMM:**
