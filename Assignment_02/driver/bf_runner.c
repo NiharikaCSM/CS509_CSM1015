@@ -4,7 +4,7 @@
 #include "graph.h"
 #include "bellman_ford.h"
 #include "wrapper.h"
-#include "../utils/csr_helper.h"
+#include "csr_helper.h"
 
 void runBellmanFordFromFile(const char *path) {
     FILE *file = fopen(path, "r");
