@@ -3,7 +3,7 @@
 #include <string.h>
 #include "graph.h"
 #include "bf_runner.h"
-//#include "fw_runner.h"
+#include "fw_runner.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
         runBellmanFordFromFile(filePath);
     } 
     else if (strcmp(method, "fw") == 0) {
-        //runFloydWarshallFromFile(filePath);
+        runFloydWarshallFromFile(filePath);
     }     
     else {
         fprintf(stderr, "Error: unknown algorithm '%s'\n", method);
