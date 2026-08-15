@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
         runKruskalFromFile(filePath);
     } 
     else if (strcmp(method, "prim") == 0) {
-        //runPrimFromFile(filePath);
+        runPrimFromFile(filePath);
     }        
     else {
         fprintf(stderr, "Error: unknown algorithm '%s'\n", method);
