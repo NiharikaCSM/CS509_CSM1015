@@ -132,15 +132,15 @@ make
 
 ## MST Results Table
 
-| File | V | E | Exp. Wt. | Kruskal Wt. | Prim Wt. | Kruskal Time | Prim Time | Equal? | Status |
-|---|---|---|---|---|---|---|---|---|---|
-| mst_10.txt | 10 | 20 | 53 | 53 | 53 | 0.0070 ms | 0.0070 ms | Yes | Pass |
-| mst_100.txt | 100 | 300 | -66 | -66 | -66 | 0.0810 ms | 0.0470 ms | Yes | Pass |
-| mst_10000.txt | 10000 | 15000 | 187717 | 187717 | 187717 | 1.6510 ms | 3.3810 ms | Yes | Pass |
-| mst_50000.txt | 50000 | 75000 | 934832 | 934832 | 934832 | 5.9800 ms | 14.4610 ms | Yes | Pass |
-| mst_100000.txt | 100000 | 150000 | 1867079 | 1867079 | 1867079 | 10.5110 ms | 26.1890 ms | Yes | Pass |
+| File | V | E  | Kruskal Wt. | Prim Wt. | Kruskal Time | Prim Time | Equal Weight? | Status |
+|---|---|---|---|---|---|---|---|---|
+| mst_10.txt | 10 | 20  | 53 | 53 | 0.0070 ms | 0.0070 ms | Yes | Pass |
+| mst_100.txt | 100 | 300  | -66 | -66 | 0.0810 ms | 0.0470 ms | Yes | Pass |
+| mst_10000.txt | 10000 | 15000  | 187717 | 187717 | 1.6510 ms | 3.3810 ms | Yes | Pass |
+| mst_50000.txt | 50000 | 75000  | 934832 | 934832 | 5.9800 ms | 14.4610 ms | Yes | Pass |
+| mst_100000.txt | 100000 | 150000 | 1867079 | 1867079 | 10.5110 ms | 26.1890 ms | Yes | Pass |
 
-*"Exp. Wt." here is each test's own correct MST weight, computed by running the reference implementation once and cross-checked by both algorithms agreeing independently.
+
 
 ## Input Validation Test Results
 
